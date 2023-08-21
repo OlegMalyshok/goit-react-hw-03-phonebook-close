@@ -3,6 +3,7 @@ import { PhoneForm } from './Phonebook/PhonebookForm';
 import { ListItem } from './Phonebook/PhonebookFormList';
 import { nanoid } from 'nanoid';
 import { Container } from './App.styled';
+import toast from 'react-hot-toast';
 
 export class App extends Component {
   state = {
@@ -15,6 +16,7 @@ export class App extends Component {
     name: '',
     number: '',
     contactFilter: '',
+    isEmptyContacts: false,
   };
 
   componentDidMount() {
@@ -25,11 +27,16 @@ export class App extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem(
-        'saved-conctacts',
-        JSON.stringify(this.state.contacts)
-      );
+    const { contacts, isEmptyContacts } = this.state;
+
+    if (prevState.isEmptyContacts !== isEmptyContacts) {
+      if (isEmptyContacts) {
+        toast.error('No contacts found.');
+      }
+    }
+
+    if (prevState.contacts !== contacts) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
     }
   }
 
