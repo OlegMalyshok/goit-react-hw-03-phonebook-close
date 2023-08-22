@@ -16,27 +16,24 @@ export class App extends Component {
     name: '',
     number: '',
     contactFilter: '',
+    isEmptyContacts: false,
   };
 
-  const localStorageKey = 'contacts';
-
   componentDidMount() {
-    const savedContacts = localStorage.getItem(localStorageKey);
-    if (savedContacts !== null) {
-      this.setState({
-        contacts: JSON.parse(savedContacts),
-      });
+    const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts) {
+      this.setState({ contacts: JSON.parse(savedContacts) });
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem(
-        localStorageKey,
-        JSON.stringify(this.state.contacts)
-      );
+  componentDidUpdate(_, prevState) {
+    const { contacts, isEmptyContacts } = this.state;
+
+    if (prevState.isEmptyContacts !== isEmptyContacts) {
+      if (isEmptyContacts) {
+        toast.error('No contacts found.');
+      }
     }
-  }
   
   addContact = newContactItem => {
     const currentContact = this.state.contacts.find(
