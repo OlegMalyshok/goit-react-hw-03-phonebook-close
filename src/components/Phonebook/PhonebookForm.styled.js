@@ -20,5 +20,5 @@ export const StyledField = styled(Field)`
 `;
 
 export const StyledError = styled(ErrorMessage)`
-  color: red;
+  color: white;
 `;
